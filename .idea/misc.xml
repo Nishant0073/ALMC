@@ -4,10 +4,11 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="app/src/main/res/drawable/shr_next_button_state_list_anim.xml" value="0.1109375" />
+        <entry key="app/src/main/res/font/roboto.xml" value="0.23125" />
         <entry key="app/src/main/res/layout/activity_login_fragment.xml" value="0.1359375" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.5" />
         <entry key="app/src/main/res/layout/fragment_home.xml" value="0.18888888888888888" />
-        <entry key="app/src/main/res/layout/fragment_login.xml" value="0.20052083333333334" />
+        <entry key="app/src/main/res/layout/fragment_login.xml" value="0.25" />
       </map>
     </option>
   </component>
