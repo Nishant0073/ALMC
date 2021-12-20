@@ -20,4 +20,5 @@
     <string name="helper_email">Email ID</string>
     <string name="helper_password">Password</string>
     <string name="Login">Login</string>
+    <string name="AppLogo">App Logo</string>
 </resources>
