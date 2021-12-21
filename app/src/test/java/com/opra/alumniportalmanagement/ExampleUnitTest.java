@@ -1,4 +1,4 @@
-package com.miniprojectg3.alumniportalmanagement;
+package com.opra.alumniportalmanagement;
 
 import org.junit.Test;
 
