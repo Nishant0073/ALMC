@@ -21,4 +21,25 @@
     <string name="helper_password">Password</string>
     <string name="Login">Login</string>
     <string name="AppLogo">App Logo</string>
+    <string name="TSearchByYear">Year</string>
+    <string name="TSearchByCompany">Company</string>
+    <string name="TAllAlumnus">All Alumnus</string>
+    <string name="Report">Report</string>
+    <string name="action_settings">Action Setting</string>
+    <string name="action_logout">Logout</string>
+    <string name="TEditInfo">Edit</string>
+    <string name="Search">Search</string>
+    <string name="TSearch">Search</string>
+    <string name="FilterBy">Filter By</string>
+    <string name="ShowAllAlumnus">Show all Alumnus</string>
+    <string name="selectYear">Select Year</string>
+    <string name="selectCompany">Select Company</string>
+    <string name="SelectFilter">Select Filter</string>
+    <string name="AlumniRegID">Reg. ID</string>
+    <string name="AlumniName">Alumni Name</string>
+    <string name="AlumniYearCompany">Alumni Filter</string>
+    <string name="NoMoreAlumnusFound">No more Alumnus found</string>
+    <string name="AlumniYear">Year</string>
+    <string name="AlumniCompany">Company</string>
+
 </resources>

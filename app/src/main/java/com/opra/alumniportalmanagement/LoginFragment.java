@@ -1,5 +1,6 @@
 package com.opra.alumniportalmanagement;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -47,14 +48,12 @@ public class LoginFragment extends Fragment {
         BLoginSubmit = view.findViewById(R.id.LLoginSubmit);
 
 
-
         BLoginSubmit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
                 LoginEmail = ELoginEMail.getText().toString().trim();
                 LoginPassword = ELoginPassword.getText().toString().trim();
-                System.out.println("Email:"+LoginEmail+" "+LoginPassword);
 
                 if(!EmailValidate())
                 {
@@ -81,12 +80,16 @@ public class LoginFragment extends Fragment {
                     System.out.println("Response:"+response);
                     if(response==1)
                     {
-//                        SharedPreferences.Editor editor = getActivity().getSharedPreferences("LoginPrefsFile", Context.MODE_PRIVATE).edit();
-//                        editor.putString("emailId", LoginEmail);
-//                        editor.putBoolean("isLogin",true);
-//                        editor.apply();
-//                        getActivity().recreate();
-                        Toast.makeText(getActivity(), "Login Successful!", Toast.LENGTH_SHORT).show();
+                       // Toast.makeText(getActivity(), "Login Successful!", Toast.LENGTH_SHORT).show();
+                        SharedPreferences.Editor editor = getActivity().getSharedPreferences("LoginPrefsFile", Context.MODE_PRIVATE).edit();
+                        editor.putString("emailId", LoginEmail);
+                        editor.putBoolean("isLogin",true);
+                        editor.apply();
+                        getActivity().finish();
+                        Intent intent = new Intent(getActivity(),MainActivity.class);
+                        startActivity(intent);
+
+
                     }
                     else if(response==0)
                     {
@@ -116,4 +119,5 @@ public class LoginFragment extends Fragment {
             return false;
         }
     }
+    
 }

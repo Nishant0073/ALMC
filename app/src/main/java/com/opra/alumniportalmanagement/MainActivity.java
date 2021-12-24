@@ -12,9 +12,6 @@ import androidx.fragment.app.FragmentManager;
 
 public class MainActivity extends AppCompatActivity {
 
-
-    String URL = "http://192.168.43.111/ALM/";
-    JSONParser jsonParser = new JSONParser();
     String email;
     Boolean isLogin;
 
@@ -30,17 +27,18 @@ public class MainActivity extends AppCompatActivity {
         email = loginPrefs.getString("emailId", "NA");
         isLogin = loginPrefs.getBoolean("isLogin", false);
 
-       // if (!isLogin) {
+        if (!isLogin) {
             Fragment mFragment = null;
             mFragment = new LoginFragment();
             FragmentManager fragmentManager = getSupportFragmentManager();
             fragmentManager.beginTransaction()
                     .replace(R.id.container, mFragment).commit();
-//        }
-//        else
-//        {
-//            Intent HomeActivity = new Intent(getApplication(),HomeActivity);
-//        }
+        }
+        else
+        {
+            Intent intentHomeActivity = new Intent(this,HomeActivity.class);
+            startActivity(intentHomeActivity);
+        }
     }
 }
 

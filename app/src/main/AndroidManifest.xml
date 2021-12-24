@@ -14,10 +14,12 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AlumniPortalManagement"
         android:usesCleartextTraffic="true"
-        tools:replace="android:icon"
-        >
+        tools:replace="android:icon">
         <activity
-            android:name="com.opra.alumniportalmanagement.MainActivity"
+            android:name=".HomeActivity"
+            android:exported="false" />
+        <activity
+            android:name=".MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
