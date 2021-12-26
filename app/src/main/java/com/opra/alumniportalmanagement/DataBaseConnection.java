@@ -5,6 +5,7 @@ import android.os.AsyncTask;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -210,6 +211,43 @@ public class DataBaseConnection {
             return jsonObject;
         }
     }
+
+
+    public JSONObject getYearOrCompanyWiseReport(String email, String isYear) throws ExecutionException, InterruptedException, JSONException {
+        JSONObject jsonObject = null;
+
+        jsonObject= new AttemptGetYearOrCompanyWiseReport().execute(email,isYear).get();
+
+        if (jsonObject != null) {
+            System.out.println("Year Wise Report:" + jsonObject.toString());
+            return jsonObject;
+        }
+        return null;
+    }
+
+    private class AttemptGetYearOrCompanyWiseReport extends AsyncTask<String, String, JSONObject> {
+
+        @Override
+        protected JSONObject doInBackground(String... strings) {
+
+
+            if(strings[1]=="1") {
+                URL += "getYearWiseReport.php";
+            }
+            else
+            {
+                URL+="getCompanyWiseReport.php";
+            }
+
+            ArrayList<NameValuePair> params = new ArrayList<NameValuePair>();
+            params.add(new BasicNameValuePair("email", strings[0]));
+
+            JSONObject jsonObject = jsonParser.makeHttpRequest(URL, "GET", params);
+            // check log cat from response
+            return jsonObject;
+        }
+    }
+
 
 }
 

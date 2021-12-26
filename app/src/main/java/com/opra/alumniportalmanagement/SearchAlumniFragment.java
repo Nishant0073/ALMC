@@ -1,13 +1,9 @@
 package com.opra.alumniportalmanagement;
 
-import android.annotation.SuppressLint;
-import android.app.DatePickerDialog;
-import android.app.Dialog;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 
-import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
@@ -16,25 +12,19 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
-import android.widget.DatePicker;
 import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.NumberPicker;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.material.textfield.TextInputLayout;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.text.SimpleDateFormat;
-import java.time.LocalDate;
-import java.time.YearMonth;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Locale;
 import java.util.concurrent.ExecutionException;
 
 
@@ -49,10 +39,11 @@ public class SearchAlumniFragment extends Fragment {
     private TextInputLayout companyPicker;
     private TextInputLayout yearPicker;
     private RelativeLayout SearchAlumniListSection;
+    public ArrayList companyList;
 
 
     public SearchAlumniFragment() {
-        // Required empty public constructor
+        // Required empty public constructorz
     }
 
     @Override
@@ -85,7 +76,7 @@ public class SearchAlumniFragment extends Fragment {
         yearMenu.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-               // Toast.makeText(getActivity(), yearList.get(position), Toast.LENGTH_SHORT).show();
+                // Toast.makeText(getActivity(), yearList.get(position), Toast.LENGTH_SHORT).show();
                 SearchAlumniListSection.setVisibility(RelativeLayout.GONE);
 
                 try {
@@ -96,14 +87,19 @@ public class SearchAlumniFragment extends Fragment {
             }
         });
 
-        String[] companyList = {"Google", "Facebook", "Amazon", "Tesla", "IBM","Ferrari"};
-
-
-        ArrayAdapter<String> companyAdapter = new ArrayAdapter<>(getContext(), R.layout.filter_by_item, companyList);
         companyMenu = view.findViewById(R.id.autoCompleteCompanyPicker);
-        companyMenu.setAdapter(companyAdapter);
         companyPicker = view.findViewById(R.id.companyPicker);
         companyPicker.setVisibility(View.GONE);
+
+        ArrayAdapter<String> companyAdapter = null;
+        try {
+            companyAdapter = new ArrayAdapter<>(getContext(), R.layout.filter_by_item, companyList=getCompanies());
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        if (companyAdapter != null)
+            companyMenu.setAdapter(companyAdapter);
+
 
         companyMenu.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -111,12 +107,13 @@ public class SearchAlumniFragment extends Fragment {
                 //Toast.makeText(getActivity(), companyList[position], Toast.LENGTH_SHORT).show();
                 SearchAlumniListSection.setVisibility(RelativeLayout.GONE);
                 try {
-                    showAllAlumnusByCompany(companyList[position]);
+                    showAllAlumnusByCompany((String) companyList.get(position));
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
             }
         });
+
 
         SearchAlumniListSection = (RelativeLayout) view.findViewById(R.id.SearchAlumniListSection);
         SearchAlumniListSection.setVisibility(RelativeLayout.GONE);
@@ -144,6 +141,7 @@ public class SearchAlumniFragment extends Fragment {
                         break;
                     case 2:
                         filterBy = "COMPANY";
+
                         yearPicker.setVisibility(View.GONE);
                         companyPicker.setVisibility(View.VISIBLE);
                         SearchAlumniListSection.setVisibility(RelativeLayout.GONE);
@@ -154,6 +152,56 @@ public class SearchAlumniFragment extends Fragment {
 
 
         return view;
+    }
+
+    private ArrayList getCompanies() throws JSONException {
+
+        ArrayList<String> companyItems = new ArrayList<>();
+
+        DataBaseConnection dataBaseConnection = new DataBaseConnection();
+        SharedPreferences loginPrefs = getActivity().getSharedPreferences("LoginPrefsFile", Context.MODE_PRIVATE);
+        String email = loginPrefs.getString("emailId", "NA");
+
+        JSONObject response = null;
+        try {
+            // System.out.println("Email:"+email);
+            response = dataBaseConnection.getYearOrCompanyWiseReport(email, "0");
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+
+        System.out.println("Response:" + response);
+        if (response == null) {
+            Toast.makeText(getActivity(), "\"Unable to connect DB!\"", Toast.LENGTH_SHORT).show();
+        } else {
+            if (response.length() != 0) {
+                // Toast.makeText(getActivity(), "Alumnus Data Found!", Toast.LENGTH_SHORT).show();
+                int n = response.length();
+                System.out.println("Value of N:" + n);
+                for (int i = 0; i < n - 3; i++) {
+                    companyItems.add(String.valueOf(response.getString(String.valueOf(i))));
+                }
+                for(String i:companyItems)
+                    System.out.println("COMPANY:"+i);
+//                System.out.println("HERE IS COMPANY:" + companyList.toString());
+                // AlumniAdapter alumniAdapter = new AlumniAdapter(getActivity(), companyItems);
+                // ListView listView = (ListView) getActivity().findViewById(R.id.AlumniList);
+                //listView.setAdapter(alumniAdapter);
+                return companyItems;
+
+            } else {
+                SearchAlumniListSection.setVisibility(LinearLayout.INVISIBLE);
+                Toast.makeText(getActivity(), "No Alumnus Found!", Toast.LENGTH_SHORT).show();
+            }
+        }
+
+
+        return companyItems;
     }
 
     private void showAllAlumnus() throws JSONException {
@@ -168,7 +216,7 @@ public class SearchAlumniFragment extends Fragment {
 
         JSONObject response = null;
         try {
-            System.out.println("Email:"+email);
+            System.out.println("Email:" + email);
             response = dataBaseConnection.getAllAlumnus(email);
         } catch (ExecutionException e) {
             e.printStackTrace();
@@ -183,15 +231,14 @@ public class SearchAlumniFragment extends Fragment {
         if (response == null) {
             Toast.makeText(getActivity(), "\"Unable to connect DB!\"", Toast.LENGTH_SHORT).show();
         } else {
-            if (response.getInt("success")==1) {
-               // Toast.makeText(getActivity(), "Alumnus Data Found!", Toast.LENGTH_SHORT).show();
+            if (response.getInt("success") == 1) {
+                // Toast.makeText(getActivity(), "Alumnus Data Found!", Toast.LENGTH_SHORT).show();
                 int n = response.length();
-                System.out.println("Value of N:"+n);
-                for(int i=0;i<n-3;i++)
-                {
+                System.out.println("Value of N:" + n);
+                for (int i = 0; i < n - 3; i++) {
                     JSONObject json = (JSONObject) response.getJSONObject(String.valueOf(i));
-                   // System.out.println("FROM JSON:"+json);
-                    alumnus.add(new Alumni(json.getString("RegID"),json.getString("AlmniRegID"),json.getString("AlmniName"),json.getString("EmailID"), json.getString("Password"), json.getString("ContactNo"), json.getString("CompyNameAdd"),json.getString("Designation"),json.getString("Package"),json.getString("CoPassword"),json.getString("PassoutYear"),json.getString("Department"),json.getString("ProfilePic"), json.getString("LnkdInLinK")));
+                    // System.out.println("FROM JSON:"+json);
+                    alumnus.add(new Alumni(json.getString("RegID"), json.getString("AlmniRegID"), json.getString("AlmniName"), json.getString("EmailID"), json.getString("Password"), json.getString("ContactNo"), json.getString("CompyNameAdd"), json.getString("Designation"), json.getString("Package"), json.getString("CoPassword"), json.getString("PassoutYear"), json.getString("Department"), json.getString("ProfilePic"), json.getString("LnkdInLinK")));
                 }
 
                 AlumniAdapter alumniAdapter = new AlumniAdapter(getActivity(), alumnus);
@@ -206,8 +253,6 @@ public class SearchAlumniFragment extends Fragment {
     }
 
 
-
-
     private void showAllAlumnusByYear(String year) throws JSONException {
 
         SearchAlumniListSection.setVisibility(LinearLayout.VISIBLE);
@@ -220,8 +265,8 @@ public class SearchAlumniFragment extends Fragment {
 
         JSONObject response = null;
         try {
-            System.out.println("Email:"+email);
-            response = dataBaseConnection.getAllAlumnus(email,year,true);
+            System.out.println("Email:" + email);
+            response = dataBaseConnection.getAllAlumnus(email, year, true);
         } catch (ExecutionException e) {
             e.printStackTrace();
         } catch (InterruptedException e) {
@@ -235,15 +280,14 @@ public class SearchAlumniFragment extends Fragment {
         if (response == null) {
             Toast.makeText(getActivity(), "\"Unable to connect DB!\"", Toast.LENGTH_SHORT).show();
         } else {
-            if (response.getInt("success")==1) {
+            if (response.getInt("success") == 1) {
                 // Toast.makeText(getActivity(), "Alumnus Data Found!", Toast.LENGTH_SHORT).show();
                 int n = response.length();
-                System.out.println("Value of N:"+n);
-                for(int i=0;i<n-3;i++)
-                {
+                System.out.println("Value of N:" + n);
+                for (int i = 0; i < n - 3; i++) {
                     JSONObject json = (JSONObject) response.getJSONObject(String.valueOf(i));
-                    System.out.println("FROM YEAR JSON:"+json);
-                    alumnus.add(new Alumni(json.getString("RegID"),json.getString("AlmniRegID"),json.getString("AlmniName"),json.getString("EmailID"), json.getString("Password"), json.getString("ContactNo"), json.getString("CompyNameAdd"),json.getString("Designation"),json.getString("Package"),json.getString("CoPassword"),json.getString("PassoutYear"),json.getString("Department"),json.getString("ProfilePic"), json.getString("LnkdInLinK")));
+                    System.out.println("FROM YEAR JSON:" + json);
+                    alumnus.add(new Alumni(json.getString("RegID"), json.getString("AlmniRegID"), json.getString("AlmniName"), json.getString("EmailID"), json.getString("Password"), json.getString("ContactNo"), json.getString("CompyNameAdd"), json.getString("Designation"), json.getString("Package"), json.getString("CoPassword"), json.getString("PassoutYear"), json.getString("Department"), json.getString("ProfilePic"), json.getString("LnkdInLinK")));
                 }
                 AlumniAdapter alumniAdapter = new AlumniAdapter(getActivity(), alumnus);
                 ListView listView = (ListView) getActivity().findViewById(R.id.AlumniList);
@@ -269,8 +313,8 @@ public class SearchAlumniFragment extends Fragment {
 
         JSONObject response = null;
         try {
-            System.out.println("Email:"+email);
-            response = dataBaseConnection.getAllAlumnus(email,company,false);
+            System.out.println("Email:" + email);
+            response = dataBaseConnection.getAllAlumnus(email, company, false);
         } catch (ExecutionException e) {
             e.printStackTrace();
         } catch (InterruptedException e) {
@@ -284,15 +328,14 @@ public class SearchAlumniFragment extends Fragment {
         if (response == null) {
             Toast.makeText(getActivity(), "\"Unable to connect DB!\"", Toast.LENGTH_SHORT).show();
         } else {
-            if (response.getInt("success")==1) {
+            if (response.getInt("success") == 1) {
                 // Toast.makeText(getActivity(), "Alumnus Data Found!", Toast.LENGTH_SHORT).show();
                 int n = response.length();
-                System.out.println("Value of N:"+n);
-                for(int i=0;i<n-3;i++)
-                {
+                System.out.println("Value of N:" + n);
+                for (int i = 0; i < n - 3; i++) {
                     JSONObject json = (JSONObject) response.getJSONObject(String.valueOf(i));
-                    System.out.println("FROM  COMPANY JSON:"+json);
-                    alumnus.add(new Alumni(json.getString("RegID"),json.getString("AlmniRegID"),json.getString("AlmniName"),json.getString("EmailID"), json.getString("Password"), json.getString("ContactNo"), json.getString("CompyNameAdd"),json.getString("Designation"),json.getString("Package"),json.getString("CoPassword"),json.getString("PassoutYear"),json.getString("Department"),json.getString("ProfilePic"), json.getString("LnkdInLinK")));
+                    System.out.println("FROM  COMPANY JSON:" + json);
+                    alumnus.add(new Alumni(json.getString("RegID"), json.getString("AlmniRegID"), json.getString("AlmniName"), json.getString("EmailID"), json.getString("Password"), json.getString("ContactNo"), json.getString("CompyNameAdd"), json.getString("Designation"), json.getString("Package"), json.getString("CoPassword"), json.getString("PassoutYear"), json.getString("Department"), json.getString("ProfilePic"), json.getString("LnkdInLinK")));
                 }
 
                 AlumniAdapter alumniAdapter = new AlumniAdapter(getActivity(), alumnus);

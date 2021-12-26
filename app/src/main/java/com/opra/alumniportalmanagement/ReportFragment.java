@@ -15,6 +15,36 @@ public class ReportFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_report, container, false);
+        View view =  inflater.inflate(R.layout.fragment_report, container, false);
+        return view;
     }
+
+    public static class YearWiseReportObject
+    {
+        public String year;
+        public int count;
+
+        YearWiseReportObject(String year,int count)
+        {
+            this.year = year;
+            this.count = count;
+        }
+    }
+
+    public static class CompanyWiseReportObject
+    {
+        public String company;
+        public int count;
+
+        CompanyWiseReportObject(String company,int count)
+        {
+            this.company = company;
+            this.count = count;
+        }
+
+        public CompanyWiseReportObject(String company) {
+            this.company = company;
+        }
+    }
+
 }

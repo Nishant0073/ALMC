@@ -41,5 +41,10 @@
     <string name="NoMoreAlumnusFound">No more Alumnus found</string>
     <string name="AlumniYear">Year</string>
     <string name="AlumniCompany">Company</string>
+    <string name="scrollViewStart">Scroll view starts</string>
+    <string name="scrollViewEnd">Scroll View ends</string>
+    <string name="Year">Year</string>
+    <string name="PlacedStudent">No. Placed Student</string>
+    <string name="Company">Company</string>
 
 </resources>
