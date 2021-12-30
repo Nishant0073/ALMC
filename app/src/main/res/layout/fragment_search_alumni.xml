@@ -84,7 +84,7 @@
 
                 <TextView
                     android:id="@+id/indAlmRegId"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:gravity="center"
                     android:text="@string/AlumniRegID"
@@ -93,7 +93,7 @@
 
                 <TextView
                     android:id="@+id/indAlmName"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:gravity="center"
                     android:text="@string/AlumniName"
@@ -102,7 +102,7 @@
 
                 <TextView
                     android:id="@+id/indAlmYear"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:gravity="center"
                     android:text="@string/AlumniYear"
@@ -110,7 +110,7 @@
                     android:textColor="@color/black" />
                 <TextView
                     android:id="@+id/indAlmCompany"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:gravity="center"
                     android:text="@string/AlumniCompany"

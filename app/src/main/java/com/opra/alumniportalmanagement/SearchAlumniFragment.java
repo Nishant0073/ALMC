@@ -25,12 +25,16 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Set;
 import java.util.concurrent.ExecutionException;
+import java.util.stream.Collectors;
 
 
 public class SearchAlumniFragment extends Fragment {
 
-    private ListView searchByListView;
+
     private View view;
     private AutoCompleteTextView filterByMenu;
     private AutoCompleteTextView yearMenu;
@@ -43,7 +47,7 @@ public class SearchAlumniFragment extends Fragment {
 
 
     public SearchAlumniFragment() {
-        // Required empty public constructorz
+        // Required empty public constructor
     }
 
     @Override
@@ -91,14 +95,12 @@ public class SearchAlumniFragment extends Fragment {
         companyPicker = view.findViewById(R.id.companyPicker);
         companyPicker.setVisibility(View.GONE);
 
-        ArrayAdapter<String> companyAdapter = null;
-        try {
-            companyAdapter = new ArrayAdapter<>(getContext(), R.layout.filter_by_item, companyList=getCompanies());
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        if (companyAdapter != null)
-            companyMenu.setAdapter(companyAdapter);
+        final ArrayAdapter<String>[] companyAdapter = new ArrayAdapter[]{null};
+        companyList = new ArrayList<String>();
+        companyList.add("Company");
+
+        companyAdapter[0] = new ArrayAdapter<>(getContext(), R.layout.filter_by_item, companyList);
+        companyMenu.setAdapter(companyAdapter[0]);
 
 
         companyMenu.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -141,10 +143,16 @@ public class SearchAlumniFragment extends Fragment {
                         break;
                     case 2:
                         filterBy = "COMPANY";
-
                         yearPicker.setVisibility(View.GONE);
                         companyPicker.setVisibility(View.VISIBLE);
                         SearchAlumniListSection.setVisibility(RelativeLayout.GONE);
+                        try {
+                            companyList = getCompanies();
+                            companyAdapter[0] = new ArrayAdapter<>(getContext(), R.layout.filter_by_item, companyList);
+                            companyMenu.setAdapter(companyAdapter[0]);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
                         break;
                 }
             }
@@ -188,10 +196,8 @@ public class SearchAlumniFragment extends Fragment {
                 }
                 for(String i:companyItems)
                     System.out.println("COMPANY:"+i);
-//                System.out.println("HERE IS COMPANY:" + companyList.toString());
-                // AlumniAdapter alumniAdapter = new AlumniAdapter(getActivity(), companyItems);
-                // ListView listView = (ListView) getActivity().findViewById(R.id.AlumniList);
-                //listView.setAdapter(alumniAdapter);
+
+                ArrayList<String> companyList = removeDuplicates(companyItems);
                 return companyItems;
 
             } else {
@@ -201,6 +207,14 @@ public class SearchAlumniFragment extends Fragment {
         }
 
 
+        return companyItems;
+    }
+
+    private ArrayList<String> removeDuplicates(ArrayList<String> companyItems) {
+        Set<String> set = new LinkedHashSet<>();
+        set.addAll(companyItems);
+        companyItems.clear();
+        companyItems.addAll(set);
         return companyItems;
     }
 

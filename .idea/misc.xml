@@ -8,7 +8,7 @@
         <entry key="app/src/main/res/layout/activity_home.xml" value="0.25" />
         <entry key="app/src/main/res/layout/activity_login_fragment.xml" value="0.1359375" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.5" />
-        <entry key="app/src/main/res/layout/alumni_list_item.xml" value="0.17314814814814813" />
+        <entry key="app/src/main/res/layout/alumni_list_item.xml" value="0.33" />
         <entry key="app/src/main/res/layout/filter_by_item.xml" value="0.20052083333333334" />
         <entry key="app/src/main/res/layout/fragment_all_alumnus.xml" value="0.11296296296296296" />
         <entry key="app/src/main/res/layout/fragment_by_year.xml" value="0.11296296296296296" />
@@ -17,9 +17,10 @@
         <entry key="app/src/main/res/layout/fragment_home.xml" value="0.18888888888888888" />
         <entry key="app/src/main/res/layout/fragment_item_list.xml" value="0.11296296296296296" />
         <entry key="app/src/main/res/layout/fragment_login.xml" value="0.25" />
-        <entry key="app/src/main/res/layout/fragment_report.xml" value="0.33" />
-        <entry key="app/src/main/res/layout/fragment_search_alumni.xml" value="0.25" />
+        <entry key="app/src/main/res/layout/fragment_report.xml" value="0.30033003300330036" />
+        <entry key="app/src/main/res/layout/fragment_search_alumni.xml" value="0.22" />
         <entry key="app/src/main/res/layout/fragment_year.xml" value="0.20104166666666667" />
+        <entry key="app/src/main/res/layout/report_list_item.xml" value="0.20104166666666667" />
         <entry key="app/src/main/res/layout/search_by_item.xml" value="0.20052083333333334" />
         <entry key="app/src/main/res/menu/option_menu.xml" value="0.1" />
         <entry key="app/src/main/res/menu/options_menu.xml" value="0.1" />
