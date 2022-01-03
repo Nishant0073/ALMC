@@ -40,68 +40,78 @@
                     android:layout_height="match_parent"
                     android:layout_margin="4dp"
                     android:layout_weight="1"
-                    android:text="Company Wise "></Button>
+                    android:text="Company Wise " />
 
             </LinearLayout>
 
-            <TextView
-                android:id="@+id/TotalPlaceStudent"
-                android:layout_below="@+id/ButtonForReport"
-                android:layout_width="match_parent"
+            <LinearLayout
+                android:id="@+id/CompanyYearReport"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:gravity="center"
-                android:layout_margin="8dp"
-                android:text="Total count of placed student!"
-                android:textColor="@color/black">
-
-            </TextView>
-
-
-            <RelativeLayout
-                android:id="@+id/CompanyWisePlacedReport"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_below="@+id/TotalPlaceStudent"
-                android:layout_margin="16dp"
+                android:layout_below="@+id/ButtonForReport"
                 android:orientation="vertical">
 
 
-                <LinearLayout
-                    android:id="@+id/RCompanyIndex"
+                <TextView
+                    android:id="@+id/TotalPlaceStudent"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal">
+                    android:layout_below="@+id/ButtonForReport"
+                    android:layout_margin="8dp"
+                    android:gravity="center"
+                    android:text="Total count of placed student!"
+                    android:textColor="@color/black">
 
-                    <TextView
-                        android:id="@+id/RCompany"
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:gravity="center"
-                        android:text="@string/Company"
-                        android:textColor="@color/black" />
-
-                    <TextView
-                        android:id="@+id/RCompanyPlaceCount"
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:gravity="center"
-                        android:text="@string/PlacedStudent"
-                        android:textColor="@color/black" />
-                </LinearLayout>
+                </TextView>
 
 
-                <ListView xmlns:android="http://schemas.android.com/apk/res/android"
-                    android:id="@+id/CompanyWisePlaceList"
-                    xmlns="http://schemas.android.com/tools"
+                <RelativeLayout
+                    android:id="@+id/CompanyWisePlacedReport"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/RCompanyIndex"
-                    tools:context=".ReportFragment" />
-            </RelativeLayout>
+                    android:layout_height="match_parent"
+                    android:layout_below="@+id/TotalPlaceStudent"
+                    android:layout_margin="16dp"
+                    android:orientation="vertical">
+
+
+                    <LinearLayout
+                        android:id="@+id/RCompanyIndex"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/RCompany"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:text="@string/Company"
+                            android:textColor="@color/black" />
+
+                        <TextView
+                            android:id="@+id/RCompanyPlaceCount"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:text="@string/PlacedStudent"
+                            android:textColor="@color/black" />
+                    </LinearLayout>
+
+
+                    <ListView xmlns:android="http://schemas.android.com/apk/res/android"
+                        android:id="@+id/CompanyWisePlaceList"
+                        xmlns="http://schemas.android.com/tools"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/RCompanyIndex"
+                        tools:context=".ReportFragment" />
+                </RelativeLayout>
+            </LinearLayout>
 
         </RelativeLayout>
+
 
     </LinearLayout>
 

@@ -40,15 +40,12 @@ public class ReportAdapter extends ArrayAdapter<Report> {
         TextView count = (TextView) listItemView.findViewById(R.id.count);
         count.setText(String.valueOf(currentReport.freq));
 
-        //View parentLayout = (View)AlumniCompany.getParent();
+        //Set same width for each column.
         int width = parent.getWidth();
-
 
         reportID.setWidth(width/2);
         count.setWidth(width/2);
 
-
-//        return super.getView(position, convertView, parent);
         return listItemView;
     }
 }

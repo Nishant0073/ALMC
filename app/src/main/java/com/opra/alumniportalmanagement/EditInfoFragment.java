@@ -35,6 +35,7 @@ import java.util.concurrent.ExecutionException;
 
 public class EditInfoFragment extends Fragment {
 
+    //Required variables
     LinearLayout JUserInfoLinearLayout;
     ImageView JAlumniPic;
     private TextInputEditText JAlumniRegIDEdit_text;
@@ -64,11 +65,11 @@ public class EditInfoFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
+
         View view = inflater.inflate(R.layout.fragment_edit_info, container, false);
 
-        JAlumniPic = (ImageView) view.findViewById(R.id.AlumniPic);
 
+        JAlumniPic = (ImageView) view.findViewById(R.id.AlumniPic);
         JUAlumniNameEdit_text = (TextInputEditText) view.findViewById(R.id.UAlumniNameEdit_text);
         JUAlumniEmailEdit_text = (TextInputEditText) view.findViewById(R.id.UAlumniEmailEdit_text);
         JUAlumniRegIDEdit_text = (TextInputEditText) view.findViewById(R.id.AlumniRegIDEdit_text);
@@ -88,11 +89,11 @@ public class EditInfoFragment extends Fragment {
         //Hiding JUserInfoLinearLayout Layout
         JUserInfoLinearLayout = (LinearLayout) view.findViewById(R.id.UserInfoLinearLayout);
         JUserInfoLinearLayout.setVisibility(JUserInfoLinearLayout.GONE);
-        //JUserInfoLinearLayout.setVisibility(LinearLayout.GONE);
 
         JBGetProfile = (Button) view.findViewById(R.id.EBGetProfile);
         JAlumniRegIDEdit_text = view.findViewById(R.id.AlumniRegIDEdit_text);
 
+        //On request from user profile.
         JBGetProfile.setOnClickListener(new View.OnClickListener() {
             @RequiresApi(api = Build.VERSION_CODES.M)
             @Override
@@ -104,14 +105,14 @@ public class EditInfoFragment extends Fragment {
                     Toast.makeText(getActivity(), "Alumni Registration ID is Required!", Toast.LENGTH_SHORT).show();
                 } else {
 
-
+                    //If Alumni Reg Id is provided then
                     DataBaseConnection dataBaseConnection = new DataBaseConnection();
                     SharedPreferences loginPrefs = getActivity().getSharedPreferences("LoginPrefsFile", Context.MODE_PRIVATE);
                     String email = loginPrefs.getString("emailId", "NA");
 
                     JSONObject response = null;
                     try {
-                        System.out.println("Email:" + email +" RegID: "+ AlumniRegId);
+                         //get alumni profile from server
                         response = dataBaseConnection.searchAlumniByAlumniId(email, AlumniRegId);
                     } catch (ExecutionException e) {
                         e.printStackTrace();
@@ -122,20 +123,22 @@ public class EditInfoFragment extends Fragment {
                     }
 
 
-                    System.out.println("Response:" + response);
+                    //if some problem occurred while connecting db.
                     if (response == null) {
                         JUserInfoLinearLayout.setVisibility(LinearLayout.GONE);
                         Toast.makeText(getActivity(), "\"Unable to connect DB!\"", Toast.LENGTH_SHORT).show();
+
                     } else {
                         try {
                             if (response.getInt("success") == 1) {
-                                // Toast.makeText(getActivity(), "Alumnus Data Found!", Toast.LENGTH_SHORT).show();
+
                                 JSONObject json = (JSONObject) response.getJSONObject("alumni");
                                 System.out.println("FROM ALUMNI REG ID JSON:" + json);
                                 alumni = new Alumni(json.getString("RegID"), json.getString("AlmniRegID"), json.getString("AlmniName"), json.getString("EmailID"), json.getString("Password"), json.getString("ContactNo"), json.getString("CompyNameAdd"), json.getString("Designation"), json.getString("Package"), json.getString("CoPassword"), json.getString("PassoutYear"), json.getString("Department"), json.getString("ProfilePic"), json.getString("LnkdInLinK"));
                                 setProfile(alumni, view);
 
                             } else {
+                                //if alumni does not exist.
                                 JUserInfoLinearLayout.setVisibility(LinearLayout.GONE);
                                 Toast.makeText(getActivity(), "No Alumnus Found!", Toast.LENGTH_SHORT).show();
                             }
@@ -147,6 +150,7 @@ public class EditInfoFragment extends Fragment {
             }
         });
 
+        //After updating value of profile
         UpdateProfile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -155,7 +159,6 @@ public class EditInfoFragment extends Fragment {
                 String email = loginPrefs.getString("emailId", "NA");
                 alumni.name = JUAlumniNameEdit_text.getText().toString().trim();
                 alumni.emailId = JUAlumniEmailEdit_text.getText().toString().trim();
-                //alumni.alumniRegId = JUAlumniRegIDEdit_text.getText().toString().trim(),
                 alumni.password = JUPasswordEdit_text.getText().toString().trim();
                 alumni.contactNo = JUContactNoEdit_text.getText().toString().trim();
                 alumni.company = JUCompanyNameEdit_text.getText().toString().trim();
@@ -167,16 +170,15 @@ public class EditInfoFragment extends Fragment {
                 alumni.profilePic = JUProfilePicLinkEdit_text.getText().toString().trim();
                 alumni.linkedInLink = JULnkdInLinKEdit_text.getText().toString().trim();
 
+                //if all values are not provided
                 if (!isValidAlumni(alumni)) {
                     Toast.makeText(getActivity(), "All fields are required!", Toast.LENGTH_SHORT).show();
                     return;
                 }
 
-                // UpdateAlumniRecord();
                 DataBaseConnection dataBaseConnection = new DataBaseConnection();
                 JSONObject response = null;
                 try {
-                    System.out.println("Email:" + email);
                     response = dataBaseConnection.UpdateAlumniRecord(email, alumni);
                 } catch (ExecutionException e) {
                     e.printStackTrace();
@@ -195,7 +197,7 @@ public class EditInfoFragment extends Fragment {
                     try {
                         if (response.getInt("success") == 1) {
                             JUserInfoLinearLayout.setVisibility(LinearLayout.GONE);
-                            Toast.makeText(getActivity(), "Profile of alumni with alumni registration Id " +alumni.alumniRegId+" updated!", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getActivity(), "Profile of alumni with alumni registration Id " + alumni.alumniRegId + " updated!", Toast.LENGTH_SHORT).show();
                             System.out.println("FROM ALUMNI UPDATE ID JSON:" + response);
 
                         } else {
@@ -232,7 +234,6 @@ public class EditInfoFragment extends Fragment {
         }
         JUAlumniNameEdit_text.setText(alumni.name);
         JUAlumniEmailEdit_text.setText(alumni.emailId);
-       // JUAlumniRegIDEdit_text.setText(alumni.alumniRegId);
         JUPasswordEdit_text.setText(alumni.password);
         JUContactNoEdit_text.setText(alumni.contactNo);
         JUCompanyNameEdit_text.setText(alumni.company);

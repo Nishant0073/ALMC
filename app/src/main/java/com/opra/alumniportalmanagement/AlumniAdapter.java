@@ -34,6 +34,7 @@ public class AlumniAdapter extends ArrayAdapter<Alumni> {
 
         Alumni currentAlumni = getItem(position);
 
+        //set values to respective textView
         TextView AlumniRegID = (TextView) listItemView.findViewById(R.id.LAlumniRegID);
         AlumniRegID.setText(currentAlumni.alumniRegId);
 
@@ -46,7 +47,8 @@ public class AlumniAdapter extends ArrayAdapter<Alumni> {
         TextView AlumniCompany = (TextView) listItemView.findViewById(R.id.LAlumniCompany);
         AlumniCompany.setText(currentAlumni.company);
 
-        //View parentLayout = (View)AlumniCompany.getParent();
+
+        //Set with of each column same.
         int width = parent.getWidth();
 
         AlumniRegID.setWidth(width/4);
@@ -54,7 +56,6 @@ public class AlumniAdapter extends ArrayAdapter<Alumni> {
         AlumniYear.setWidth(width/4);
         AlumniCompany.setWidth(width/4);
 
-//        return super.getView(position, convertView, parent);
         return listItemView;
     }
 }

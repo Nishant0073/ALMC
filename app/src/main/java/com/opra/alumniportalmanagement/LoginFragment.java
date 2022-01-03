@@ -39,7 +39,6 @@ public class LoginFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
 
         view = inflater.inflate(R.layout.fragment_login, container, false);
 
@@ -80,7 +79,6 @@ public class LoginFragment extends Fragment {
                     System.out.println("Response:"+response);
                     if(response==1)
                     {
-                       // Toast.makeText(getActivity(), "Login Successful!", Toast.LENGTH_SHORT).show();
                         SharedPreferences.Editor editor = getActivity().getSharedPreferences("LoginPrefsFile", Context.MODE_PRIVATE).edit();
                         editor.putString("emailId", LoginEmail);
                         editor.putBoolean("isLogin",true);
@@ -88,8 +86,6 @@ public class LoginFragment extends Fragment {
                         getActivity().finish();
                         Intent intent = new Intent(getActivity(),MainActivity.class);
                         startActivity(intent);
-
-
                     }
                     else if(response==0)
                     {

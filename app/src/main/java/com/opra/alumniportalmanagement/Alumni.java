@@ -1,5 +1,7 @@
 package com.opra.alumniportalmanagement;
 
+//Alumni class for alumni
+
 public class Alumni {
     public String regId;
     public String alumniRegId;
@@ -16,14 +18,8 @@ public class Alumni {
     public String profilePic;
     public String linkedInLink;
 
-    public Alumni(String name,String alumniRegId,String year,String company)
-    {
-        this.name = name;
-        this.alumniRegId = alumniRegId;
-        this.year = year;
-        this.company = company;
-    }
 
+    //Parameterized constructor
     public Alumni(String regId,String alumniRegId,String name,String emailId,String password,String contactNo,String company,String designation,String packageSalary,String coPassword,String year,String department,String profilePic,String linkedInLink)
     {
         this.regId = regId;
@@ -42,6 +38,7 @@ public class Alumni {
         this.linkedInLink = linkedInLink;
     }
 
+    //Default constructor
     public Alumni(){};
 
 }

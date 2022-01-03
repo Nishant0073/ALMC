@@ -35,20 +35,26 @@ import java.util.concurrent.ExecutionException;
 public class ReportFragment extends Fragment {
     private View view;
     private ListView listView;
-    Button yearButton ;
-    Button companyButton ;
+    Button yearButton;
+    Button companyButton;
     TextView totalPlacedAlumnus;
+    LinearLayout CompanyYearReport;
+    TextView RCompany;
 
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
+
         view = inflater.inflate(R.layout.fragment_report, container, false);
         totalPlacedAlumnus = (TextView) view.findViewById(R.id.TotalPlaceStudent);
         totalPlacedAlumnus.setVisibility(View.GONE);
         yearButton = view.findViewById(R.id.yearWiseReportButton);
         companyButton = view.findViewById(R.id.companyWiseReportButton);
+        CompanyYearReport = view.findViewById(R.id.CompanyYearReport);
+        RCompany = view.findViewById(R.id.RCompany);
+
+        CompanyYearReport.setVisibility(View.INVISIBLE);
         companyButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -74,6 +80,8 @@ public class ReportFragment extends Fragment {
     }
 
     private void getCompanyWiseReport() throws JSONException {
+        RCompany.setText("Company");
+        CompanyYearReport.setVisibility(View.VISIBLE);
 
         ArrayList<Report> reportList = new ArrayList<>();
 
@@ -83,7 +91,6 @@ public class ReportFragment extends Fragment {
 
         JSONObject response = null;
         try {
-            System.out.println("HERE TO FIND YEAR WISE REPORT:" + email);
             response = dataBaseConnection.getYearOrCompanyWiseReport(email, "0");
         } catch (ExecutionException e) {
             e.printStackTrace();
@@ -93,13 +100,10 @@ public class ReportFragment extends Fragment {
             e.printStackTrace();
         }
 
-
-        System.out.println("Response:" + response);
         if (response == null) {
             Toast.makeText(getActivity(), "\"Unable to connect DB!\"", Toast.LENGTH_SHORT).show();
         } else {
             if (response.getInt("success") == 1) {
-                // Toast.makeText(getActivity(), "Alumnus Data Found!", Toast.LENGTH_SHORT).show();
                 Map<String, Integer> mp = new LinkedHashMap<String, Integer>();
                 int n = response.length();
                 System.out.println("Value of N:" + n);
@@ -114,17 +118,16 @@ public class ReportFragment extends Fragment {
                 int totalPlacedCnt = 0;
                 for (Map.Entry<String, Integer> entry : mp.entrySet()) {
                     reportList.add(new Report(entry.getKey(), entry.getValue()));
-                    totalPlacedCnt+=entry.getValue();
+                    totalPlacedCnt += entry.getValue();
                 }
 
-                System.out.println("SIze of list:"+reportList.size());
+                System.out.println("SIze of list:" + reportList.size());
                 ReportAdapter reportAdapter = new ReportAdapter(getActivity(), reportList);
                 listView = (ListView) getActivity().findViewById(R.id.CompanyWisePlaceList);
                 listView.setAdapter(reportAdapter);
                 totalPlacedAlumnus.setVisibility(View.VISIBLE);
-                totalPlacedAlumnus.setText("Total count of placed alumnus is :  "+ totalPlacedCnt);
+                totalPlacedAlumnus.setText("Total count of placed alumnus is :  " + totalPlacedCnt);
             } else {
-                // SearchAlumniListSection.setVisibility(LinearLayout.INVISIBLE);
                 Toast.makeText(getActivity(), "No Year Wise Record Found!", Toast.LENGTH_SHORT).show();
                 totalPlacedAlumnus.setVisibility(View.GONE);
             }
@@ -133,6 +136,8 @@ public class ReportFragment extends Fragment {
     }
 
     private void getYearWiseReport() throws JSONException {
+        CompanyYearReport.setVisibility(View.VISIBLE);
+        RCompany.setText("Year");
 
         ArrayList<Report> reportList = new ArrayList<>();
 
@@ -142,7 +147,6 @@ public class ReportFragment extends Fragment {
 
         JSONObject response = null;
         try {
-            System.out.println("HERE TO FIND YEAR WISE REPORT:" + email);
             response = dataBaseConnection.getYearOrCompanyWiseReport(email, "1");
         } catch (ExecutionException e) {
             e.printStackTrace();
@@ -153,12 +157,10 @@ public class ReportFragment extends Fragment {
         }
 
 
-        System.out.println("Response:" + response);
         if (response == null) {
             Toast.makeText(getActivity(), "\"Unable to connect DB!\"", Toast.LENGTH_SHORT).show();
         } else {
             if (response.getInt("success") == 1) {
-                // Toast.makeText(getActivity(), "Alumnus Data Found!", Toast.LENGTH_SHORT).show();
                 Map<String, Integer> mp = new HashMap<>();
                 int n = response.length();
                 System.out.println("Value of N:" + n);
@@ -173,17 +175,15 @@ public class ReportFragment extends Fragment {
                 int totalPlacedCnt = 0;
                 for (Map.Entry<String, Integer> entry : mp.entrySet()) {
                     reportList.add(new Report(entry.getKey(), entry.getValue()));
-                    totalPlacedCnt+=entry.getValue();
+                    totalPlacedCnt += entry.getValue();
                 }
 
-                System.out.println("SIze of list:"+reportList.size());
                 ReportAdapter reportAdapter = new ReportAdapter(getActivity(), reportList);
                 listView = (ListView) getActivity().findViewById(R.id.CompanyWisePlaceList);
                 listView.setAdapter(reportAdapter);
                 totalPlacedAlumnus.setVisibility(View.VISIBLE);
-                totalPlacedAlumnus.setText("Total count of placed alumnus is :  "+ totalPlacedCnt);
+                totalPlacedAlumnus.setText("Total count of placed alumnus is :  " + totalPlacedCnt);
             } else {
-                // SearchAlumniListSection.setVisibility(LinearLayout.INVISIBLE);
                 totalPlacedAlumnus.setVisibility(View.GONE);
                 Toast.makeText(getActivity(), "No Year Wise Record Found!", Toast.LENGTH_SHORT).show();
             }

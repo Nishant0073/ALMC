@@ -53,7 +53,6 @@ public class SearchAlumniFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_search_alumni, container, false);
 
         String[] filterArray = {"Show All Alumnus", "Graduation Year", "Placed Company"};
@@ -80,7 +79,6 @@ public class SearchAlumniFragment extends Fragment {
         yearMenu.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                // Toast.makeText(getActivity(), yearList.get(position), Toast.LENGTH_SHORT).show();
                 SearchAlumniListSection.setVisibility(RelativeLayout.GONE);
 
                 try {
@@ -106,7 +104,6 @@ public class SearchAlumniFragment extends Fragment {
         companyMenu.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                //Toast.makeText(getActivity(), companyList[position], Toast.LENGTH_SHORT).show();
                 SearchAlumniListSection.setVisibility(RelativeLayout.GONE);
                 try {
                     showAllAlumnusByCompany((String) companyList.get(position));
@@ -128,7 +125,6 @@ public class SearchAlumniFragment extends Fragment {
                         filterBy = "ALL";
                         yearPicker.setVisibility(View.GONE);
                         companyPicker.setVisibility(View.GONE);
-                        //SearchAlumniListSection.setVisibility(LinearLayout.GONE);
                         try {
                             showAllAlumnus();
                         } catch (JSONException e) {
@@ -172,7 +168,6 @@ public class SearchAlumniFragment extends Fragment {
 
         JSONObject response = null;
         try {
-            // System.out.println("Email:"+email);
             response = dataBaseConnection.getYearOrCompanyWiseReport(email, "0");
         } catch (ExecutionException e) {
             e.printStackTrace();
@@ -188,14 +183,13 @@ public class SearchAlumniFragment extends Fragment {
             Toast.makeText(getActivity(), "\"Unable to connect DB!\"", Toast.LENGTH_SHORT).show();
         } else {
             if (response.length() != 0) {
-                // Toast.makeText(getActivity(), "Alumnus Data Found!", Toast.LENGTH_SHORT).show();
                 int n = response.length();
                 System.out.println("Value of N:" + n);
                 for (int i = 0; i < n - 3; i++) {
                     companyItems.add(String.valueOf(response.getString(String.valueOf(i))));
                 }
-                for(String i:companyItems)
-                    System.out.println("COMPANY:"+i);
+                for (String i : companyItems)
+                    System.out.println("COMPANY:" + i);
 
                 ArrayList<String> companyList = removeDuplicates(companyItems);
                 return companyItems;
@@ -240,18 +234,13 @@ public class SearchAlumniFragment extends Fragment {
             e.printStackTrace();
         }
 
-
-        System.out.println("Response:" + response);
         if (response == null) {
             Toast.makeText(getActivity(), "\"Unable to connect DB!\"", Toast.LENGTH_SHORT).show();
         } else {
             if (response.getInt("success") == 1) {
-                // Toast.makeText(getActivity(), "Alumnus Data Found!", Toast.LENGTH_SHORT).show();
                 int n = response.length();
-                System.out.println("Value of N:" + n);
                 for (int i = 0; i < n - 3; i++) {
                     JSONObject json = (JSONObject) response.getJSONObject(String.valueOf(i));
-                    // System.out.println("FROM JSON:"+json);
                     alumnus.add(new Alumni(json.getString("RegID"), json.getString("AlmniRegID"), json.getString("AlmniName"), json.getString("EmailID"), json.getString("Password"), json.getString("ContactNo"), json.getString("CompyNameAdd"), json.getString("Designation"), json.getString("Package"), json.getString("CoPassword"), json.getString("PassoutYear"), json.getString("Department"), json.getString("ProfilePic"), json.getString("LnkdInLinK")));
                 }
 
@@ -295,7 +284,6 @@ public class SearchAlumniFragment extends Fragment {
             Toast.makeText(getActivity(), "\"Unable to connect DB!\"", Toast.LENGTH_SHORT).show();
         } else {
             if (response.getInt("success") == 1) {
-                // Toast.makeText(getActivity(), "Alumnus Data Found!", Toast.LENGTH_SHORT).show();
                 int n = response.length();
                 System.out.println("Value of N:" + n);
                 for (int i = 0; i < n - 3; i++) {
@@ -338,17 +326,13 @@ public class SearchAlumniFragment extends Fragment {
         }
 
 
-        System.out.println("Response:" + response);
         if (response == null) {
             Toast.makeText(getActivity(), "\"Unable to connect DB!\"", Toast.LENGTH_SHORT).show();
         } else {
             if (response.getInt("success") == 1) {
-                // Toast.makeText(getActivity(), "Alumnus Data Found!", Toast.LENGTH_SHORT).show();
                 int n = response.length();
-                System.out.println("Value of N:" + n);
                 for (int i = 0; i < n - 3; i++) {
                     JSONObject json = (JSONObject) response.getJSONObject(String.valueOf(i));
-                    System.out.println("FROM  COMPANY JSON:" + json);
                     alumnus.add(new Alumni(json.getString("RegID"), json.getString("AlmniRegID"), json.getString("AlmniName"), json.getString("EmailID"), json.getString("Password"), json.getString("ContactNo"), json.getString("CompyNameAdd"), json.getString("Designation"), json.getString("Package"), json.getString("CoPassword"), json.getString("PassoutYear"), json.getString("Department"), json.getString("ProfilePic"), json.getString("LnkdInLinK")));
                 }
 

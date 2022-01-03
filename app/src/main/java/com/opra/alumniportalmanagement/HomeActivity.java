@@ -16,8 +16,8 @@ import com.google.android.material.tabs.TabLayout;
 public class HomeActivity extends AppCompatActivity {
 
     private TabLayout tabLayout;
-   // private TabItem tabItem;
     private ViewPager viewPager;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -26,10 +26,6 @@ public class HomeActivity extends AppCompatActivity {
         tabLayout = (TabLayout)findViewById(R.id.TabLayout);
         viewPager = (ViewPager)findViewById(R.id.viewPager);
 
-//        tabLayout.addTab(tabLayout.newTab().setText(R.string.TAllAlumnus));
-//        tabLayout.addTab(tabLayout.newTab().setText(R.string.TSearchByCompany));
-//        tabLayout.addTab(tabLayout.newTab().setText(R.string.TSearchByYear));
-//        tabLayout.addTab(tabLayout.newTab().setText(R.string.Report));
 
 
         final TabAdapter tabAdapter = new TabAdapter(this,getSupportFragmentManager(),tabLayout.getTabCount());
@@ -83,6 +79,6 @@ public class HomeActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        finishAffinity(); // or finish();
+        finishAffinity();
     }
 }

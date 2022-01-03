@@ -27,6 +27,7 @@ public class MainActivity extends AppCompatActivity {
         email = loginPrefs.getString("emailId", "NA");
         isLogin = loginPrefs.getBoolean("isLogin", false);
 
+        //if isLogin is false mean coordinator is not logged in.Provide Login fragment to login.
         if (!isLogin) {
             Fragment mFragment = null;
             mFragment = new LoginFragment();
@@ -36,6 +37,7 @@ public class MainActivity extends AppCompatActivity {
         }
         else
         {
+            //if coordinator is logged in then provide the home page.
             Intent intentHomeActivity = new Intent(this,HomeActivity.class);
             startActivity(intentHomeActivity);
         }

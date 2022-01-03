@@ -13,11 +13,11 @@ import java.util.ArrayList;
 import java.util.concurrent.ExecutionException;
 
 public class DataBaseConnection {
-    //Network Ip
+    //Server IP address
     String URL = "http://192.168.43.111/ALM/";
     JSONParser jsonParser = new JSONParser();
 
-
+    //method to validate username and password of coordinator.
     public int ValidateUser(String email, String password) throws ExecutionException, InterruptedException, JSONException {
 
 
@@ -28,6 +28,8 @@ public class DataBaseConnection {
         return -2;
     }
 
+
+    //Actually performing validation by validating credentials with database.
     private class AttemptValidation extends AsyncTask<String, String, JSONObject> {
 
         @Override
@@ -37,11 +39,12 @@ public class DataBaseConnection {
 
         @Override
         protected JSONObject doInBackground(String... strings) {
+
+            //Server page for login
             URL += "login.php";
             String email = strings[0];
             String password = strings[1];
 
-            System.out.println("VALUES:" + email + " " + password);
 
             ArrayList<NameValuePair> params = new ArrayList<NameValuePair>();
             params.add(new BasicNameValuePair("email", email));
@@ -49,12 +52,13 @@ public class DataBaseConnection {
 
 
             JSONObject jsonObject = jsonParser.makeHttpRequest(URL, "GET", params);
-            // check log cat from response
+
             return jsonObject;
         }
     }
 
 
+    //Method to get all alumnus of department.
     public JSONObject getAllAlumnus(String email) throws ExecutionException, InterruptedException, JSONException {
 
         JSONObject jsonObject = new AttemptGetAllAlumnus().execute(email).get();
@@ -66,6 +70,8 @@ public class DataBaseConnection {
         return null;
     }
 
+
+    //Method to get all alumnus by year or company
     public JSONObject getAllAlumnus(String email, String yearOrCompany, boolean isYear) throws ExecutionException, InterruptedException, JSONException {
         JSONObject jsonObject = null;
 
@@ -83,6 +89,7 @@ public class DataBaseConnection {
     }
 
 
+    //Method to get all alumnus from the server;
     private class AttemptGetAllAlumnus extends AsyncTask<String, String, JSONObject> {
 
         @Override
@@ -95,11 +102,12 @@ public class DataBaseConnection {
 
 
             JSONObject jsonObject = jsonParser.makeHttpRequest(URL, "GET", params);
-            // check log cat from response
+
             return jsonObject;
         }
     }
 
+    //To get all alumnus by year from the server
     private class AttemptGetAllAlumnusByYear extends AsyncTask<String, String, JSONObject> {
 
         @Override
@@ -111,7 +119,6 @@ public class DataBaseConnection {
             params.add(new BasicNameValuePair("email", strings[0]));
             params.add(new BasicNameValuePair("year", strings[1]));
             System.out.println("YEAR AND EMAIL:" + strings[0] + " " + strings[1]);
-
 
             JSONObject jsonObject = jsonParser.makeHttpRequest(URL, "GET", params);
             // check log cat from response
@@ -131,7 +138,6 @@ public class DataBaseConnection {
             params.add(new BasicNameValuePair("email", strings[0]));
             params.add(new BasicNameValuePair("company", strings[1]));
 
-
             JSONObject jsonObject = jsonParser.makeHttpRequest(URL, "GET", params);
             // check log cat from response
             return jsonObject;
@@ -139,36 +145,35 @@ public class DataBaseConnection {
     }
 
 
+    //Method to search alumni by Id.
     public JSONObject searchAlumniByAlumniId(String email, String alumniId) throws ExecutionException, InterruptedException, JSONException {
         JSONObject jsonObject = null;
 
         jsonObject = new AttemptGetAlumniByAlumniRegID().execute(email, alumniId).get();
 
         if (jsonObject != null) {
-            System.out.println("Search By ID:" + jsonObject.toString());
             return jsonObject;
         }
         return null;
     }
 
+    //Method to get alumni by Id from server.
     private class AttemptGetAlumniByAlumniRegID extends AsyncTask<String, String, JSONObject> {
 
         @Override
         protected JSONObject doInBackground(String... strings) {
-
             URL += "getAlumniByAlumniRegID.php";
-
             ArrayList<NameValuePair> params = new ArrayList<NameValuePair>();
             params.add(new BasicNameValuePair("email", strings[0]));
             params.add(new BasicNameValuePair("AlumniRegId", strings[1]));
 
 
             JSONObject jsonObject = jsonParser.makeHttpRequest(URL, "GET", params);
-            // check log cat from response
             return jsonObject;
         }
     }
 
+    //Method to update alumni records.
     public JSONObject UpdateAlumniRecord(String email, Alumni alumni) throws ExecutionException, InterruptedException, JSONException {
         JSONObject jsonObject = null;
 
@@ -182,6 +187,7 @@ public class DataBaseConnection {
         return null;
     }
 
+    //Method to update alumni data on server.
     private class AttemptUpdateAlumniRecord extends AsyncTask<String, String, JSONObject> {
         @Override
         protected JSONObject doInBackground(String... strings) {
@@ -203,16 +209,14 @@ public class DataBaseConnection {
             params.add(new BasicNameValuePair("Department", strings[11]));
             params.add(new BasicNameValuePair("ProfilePic", strings[12]));
             params.add(new BasicNameValuePair("LnkdInLink", strings[13]));
-            //System.out.println(params);
 
             JSONObject jsonObject = jsonParser.makeHttpRequest(URL, "POST", params);
-            //System.out.println("CURRENT OUTPUT:"+jsonObject+" "+URL);
-            // check log cat from response
             return jsonObject;
         }
     }
 
 
+    //Method to get compnay and year wise report
     public JSONObject getYearOrCompanyWiseReport(String email, String isYear) throws ExecutionException, InterruptedException, JSONException {
         JSONObject jsonObject = null;
 
@@ -225,6 +229,7 @@ public class DataBaseConnection {
         return null;
     }
 
+    //Method to get company and year wise report from sever.
     private class AttemptGetYearOrCompanyWiseReport extends AsyncTask<String, String, JSONObject> {
 
         @Override
@@ -243,7 +248,7 @@ public class DataBaseConnection {
             params.add(new BasicNameValuePair("email", strings[0]));
 
             JSONObject jsonObject = jsonParser.makeHttpRequest(URL, "GET", params);
-            // check log cat from response
+
             return jsonObject;
         }
     }
