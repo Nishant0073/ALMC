@@ -1,2 +1,2 @@
 # ALMC
-Opra Internship
+A android app alumni management portal for collage
